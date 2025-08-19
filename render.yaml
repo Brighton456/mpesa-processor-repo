@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: mpesa-processor
+    env: node
+    plan: free # Or your preferred plan
+    buildCommand: 'yarn install --production --frozen-lockfile'
+    startCommand: 'node index.js'
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ALLOWED_ORIGIN
+        # This should be your Vercel frontend URL
+        value: https://your-frontend-url.vercel.app 
+      - fromGroup: mpesa-credentials
+
+# Environment Group for secrets
+# In the Render dashboard, create an Environment Group named 'mpesa-credentials'
+# and add the following secret keys:
+# MPESA_CONSUMER_KEY
+# MPESA_CONSUMER_SECRET
+# MPESA_SHORTCODE
+# MPESA_PASSKEY
+# MPESA_CALLBACK_URL (e.g., https://mpesa-processor.onrender.com/api/mpesa/callback)
